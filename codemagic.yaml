@@ -12,11 +12,15 @@ workflows:
         script: npm run build
       - name: Sync Capacitor
         script: npx cap sync android
+      - name: Fix Gradle Wrapper
+        script: |
+          cd android
+          rm -rf gradle/wrapper/gradle-wrapper.jar
+          curl -L https://raw.githubusercontent.com/gradle/gradle/v8.14.3/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
       - name: Build Android release
         script: |
           cd android
           chmod +x gradlew
-          ./gradlew wrapper --gradle-version 8.14.3
           ./gradlew assembleDebug
     artifacts:
       - android/app/build/outputs/apk/**/*.apk
