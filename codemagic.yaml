@@ -18,8 +18,6 @@ workflows:
 
       - name: Build Android release
         script: |
-          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
-          export PATH=$JAVA_HOME/bin:$PATH
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
