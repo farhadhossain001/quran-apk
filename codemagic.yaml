@@ -5,22 +5,24 @@ workflows:
     environment:
       node: latest
       java: 17
+
     scripts:
       - name: Install npm dependencies
         script: npm install
+
       - name: Build web app
         script: npm run build
+
       - name: Sync Capacitor
         script: npx cap sync android
-      - name: Fix Gradle Wrapper
-        script: |
-          cd android
-          rm -rf gradle/wrapper/gradle-wrapper.jar
-          curl -L https://raw.githubusercontent.com/gradle/gradle/v8.14.3/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
+
       - name: Build Android release
         script: |
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+          export PATH=$JAVA_HOME/bin:$PATH
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
+
     artifacts:
       - android/app/build/outputs/apk/**/*.apk
